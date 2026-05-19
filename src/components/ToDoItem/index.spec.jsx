@@ -41,4 +41,44 @@ describe("ToDoItem", () => {
 
     expect(fnSelectTodoForEdit).toHaveBeenCalledWith(item);
   });
+
+  it("should call function removeTodo when the delete button is clicked", async () => {
+    const fnSelectTodoForDelete = jest.fn();
+
+    const item = {
+      description: "remove anything",
+      createdAt: new Date(),
+      completed: false,
+    };
+
+    const { getByRole } = render(
+      <TodoContext.Provider value={{ removeTodo: fnSelectTodoForDelete }}>
+        <ToDoItem item={item} />
+      </TodoContext.Provider>,
+    );
+    const button = getByRole("button", { name: /delete/i });
+    await userEvent.click(button);
+
+    expect(fnSelectTodoForDelete).toHaveBeenCalledWith(item);
+  });
+
+  it("[data-testid] should call function removeTodo when the delete button is clicked", async () => {
+    const fnSelectTodoForDelete = jest.fn();
+
+    const item = {
+      description: "remove anything",
+      createdAt: new Date(),
+      completed: false,
+    };
+
+    const { getByTestId } = render(
+      <TodoContext.Provider value={{ removeTodo: fnSelectTodoForDelete }}>
+        <ToDoItem item={item} />
+      </TodoContext.Provider>,
+    );
+    const button = getByTestId("btn-delete");
+    await userEvent.click(button);
+
+    expect(fnSelectTodoForDelete).toHaveBeenCalledWith(item);
+  });
 });
