@@ -25,4 +25,12 @@ describe("SubHeading", () => {
       expect(queryByText("To study")).toBeNull();
     });
   });
+
+  describe("findBy", () => {
+    it("should render the text after 500ms", async () => {
+      const { findByText } = render(<SubHeading>To study</SubHeading>);
+      const description = await findByText("Adicione um novo item");
+      expect(description).toBeInTheDocument();
+    });
+  });
 });
