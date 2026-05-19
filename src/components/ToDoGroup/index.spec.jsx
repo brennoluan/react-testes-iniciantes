@@ -3,6 +3,23 @@ import { render } from "@testing-library/react";
 import { TodoContext } from "../TodoProvider/TodoContext.js";
 
 describe("ToDoGroup", () => {
+  it("should render the message with isLoading true ", () => {
+    const { getByText, queryAllByRole } = render(
+      <ToDoGroup isLoading={true} todos={[]} heading="test" />,
+    );
+    expect(getByText("Carregando...")).toBeInTheDocument();
+    expect(queryAllByRole("listitem")).toHaveLength(0);
+  });
+
+  it("should render the empty list message  ", () => {
+    const { getByText, queryAllByRole, queryByText } = render(
+      <ToDoGroup isLoading={false} todos={[]} heading="test" />,
+    );
+    expect(getByText("Nenhum item encontrado.")).toBeInTheDocument();
+    expect(queryByText("Carregando...")).toBeNull();
+    expect(queryAllByRole("listitem")).toHaveLength(0);
+  });
+
   it("should render the group", () => {
     const { getByText, queryAllByRole } = render(<ToDoGroup todos={[]} heading="test" />);
     expect(getByText("test")).toBeInTheDocument();
