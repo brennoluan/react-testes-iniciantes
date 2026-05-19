@@ -6,6 +6,7 @@ export const TodoProvider = ({ children }) => {
   const [todos, setTodos] = useState([]);
   const [showDialog, setShowDialog] = useState(false);
   const [selectedTodo, setSelectedTodo] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchTodos = async () => {
@@ -13,7 +14,12 @@ export const TodoProvider = ({ children }) => {
       setTodos(todosFromApi);
     };
 
-    fetchTodos();
+    setIsLoading(true);
+
+    setTimeout(() => {
+      fetchTodos();
+      setIsLoading(false);
+    }, 5000);
   }, []);
 
   const upsertTodo = async (formData) => {
@@ -81,6 +87,7 @@ export const TodoProvider = ({ children }) => {
         isModalOpen: showDialog,
         selectTodoForEdit,
         selectedTodo,
+        isLoading,
       }}
     >
       {children}
